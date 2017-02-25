@@ -53,9 +53,13 @@ class ChatViewController: JSQMessagesViewController {
             collectionView?.collectionViewLayout.incomingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
             collectionView?.collectionViewLayout.outgoingAvatarViewSize = CGSize(width: kJSQMessagesCollectionViewAvatarSizeDefault, height:kJSQMessagesCollectionViewAvatarSizeDefault )
         }
+
+        let showActionSheetBarButton = UIBarButtonItem(title: "Item", style: .plain, target: self, action: #selector(showActionSheetBarButtonTapped(_:)))
         
         // Show Button to simulate incoming messages
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.jsq_defaultTypingIndicator(), style: .plain, target: self, action: #selector(receiveMessagePressed))
+        let simulateIncomingBarButton = UIBarButtonItem(image: UIImage.jsq_defaultTypingIndicator(), style: .plain, target: self, action: #selector(receiveMessagePressed))
+        
+        self.navigationItem.setRightBarButtonItems([showActionSheetBarButton, simulateIncomingBarButton], animated: true)
         
         // This is a beta feature that mostly works but to make things more stable it is diabled.
         collectionView?.collectionViewLayout.springinessEnabled = false
@@ -64,6 +68,14 @@ class ChatViewController: JSQMessagesViewController {
 
         self.collectionView?.reloadData()
         self.collectionView?.layoutIfNeeded()
+    }
+    
+    func showActionSheetBarButtonTapped(_ sender: Any) {
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        sheet.addAction(UIAlertAction(title: "Destructive", style: .destructive))
+        sheet.addAction(UIAlertAction(title: "Default", style: .default))
+        present(sheet, animated: true)
     }
     
     func setupBackButton() {
